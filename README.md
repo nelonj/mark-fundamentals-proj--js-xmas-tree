@@ -207,7 +207,7 @@ Now, **predict what the Jest test output might be**, and run the tests.
 
 How does the Jest output help us identify how our test is failing?
 
-## Exercise 4: Jest in watch mode
+## Exercise 3: Jest in watch mode
 
 > 🎯 **Success criterion:** Jest is running in watch mode and automatically rerunning as relevant code changes.
 
@@ -247,3 +247,45 @@ Let's go back to our `package.json` and update our scripts to give us a convenie
 So, now, you can run either `yarn test` or `yarn test:watch` (with the [colon being a common convention for related `npm` or `yarn` scripts](https://stackoverflow.com/questions/47606101/what-is-colon-in-npm-script-names)).
 
 (Alternatively, you might prefer to configure watch mode to be the default on the `"test"` script, with a `:noWatch` appended to run without watch mode.)
+
+## Exercise 4: `.toBe` vs `.toEqual`
+
+Now, let's change `makeTreeTrunk` to make one assertion pass:
+
+```js
+function makeTreeTrunk(foliageHeight) {
+  return ["____#____", "____#____"];
+}
+```
+
+Before you look at the test output, **predict what you think the test output will be**:
+
+<details>
+  <summary>SPOILER: test output</summary>
+  <pre>
+     expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 2
+    + Received  + 2
+
+      Array [
+    -   "__#__",
+    -   "__#__",
+    +   "____#____",
+    +   "____#____",
+      ]
+
+      14 | test.only("makeTreeTrunk returns the tree trunk part of the Christmas tree with given foliage height", () => {
+      15 |   expect(makeTreeTrunk(5)).toEqual(["____#____", "____#____"]);
+    > 16 |   expect(makeTreeTrunk(3)).toEqual(["__#__", "__#__"]);
+         |                            ^
+      17 | });
+      18 |
+      19 | test("makeFoliageSegment returns the foliage segment for a given level of a tree of given foliage height", () => {
+
+      at Object.<anonymous> (xmas-tree.test.js:16:28)
+
+  </pre>
+
+  <p>Our first assertion (line 15) is now passing, but the second assertion (line 16) is failing, with two missing lines and two additional (unwanted) lines.</p>
+</details>
