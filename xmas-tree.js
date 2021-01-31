@@ -1,37 +1,32 @@
 function xmasTree(foliageHeight) {
-  // Array spread would be preferred for brevity, but an array concatenation has been chosen for accessibility
+  /**
+   * We've broken down this function into three sub-problems.
+   * You can solve the overall kata by solving the sub-problems - you shouldn't need to make changes to this function.
+   * (Although, if you wish to, you could.)
+   */
+
+  // 1. make the tree foliage
   const foliage = makeTreeFoliage(foliageHeight);
+  // 2. make the tree trunk
   const trunk = makeTreeTrunk(foliageHeight);
+  // 3. group them together
   return foliage.concat(trunk);
 }
 
 function findLineWidth(foliageHeight) {
-  return 2 * foliageHeight - 1;
+  // your code here
 }
 
 function makeFoliageSegment(foliageHeight, segmentLevel) {
-  const lineWidth = findLineWidth(foliageHeight);
-  const foliage = "#".repeat(2 * segmentLevel - 1);
-  const halfTrunkPadding = "_".repeat((lineWidth - foliage.length) / 2);
-  return `${halfTrunkPadding}${foliage}${halfTrunkPadding}`;
+  // your code here
 }
 
 function makeTreeFoliage(foliageHeight) {
-  // An array map would be preferred here, but a for loop has been chosen for exposure
-  const foliage = [];
-  for (let segmentLevel = 1; segmentLevel <= foliageHeight; segmentLevel++) {
-    const foliageSegment = makeFoliageSegment(foliageHeight, segmentLevel);
-    foliage.push(foliageSegment);
-  }
-  return foliage;
+  // your code here
 }
 
 function makeTreeTrunk(foliageHeight) {
-  const lineWidth = findLineWidth(foliageHeight);
-  const halfTrunkWidth = (lineWidth - 1) / 2;
-  const halfTrunkPadding = "_".repeat(halfTrunkWidth);
-  const trunkSegment = `${halfTrunkPadding}#${halfTrunkPadding}`;
-  return [trunkSegment, trunkSegment];
+  // your code here
 }
 
 // exports the functions so that ./xmas-tree.test.js can import them
