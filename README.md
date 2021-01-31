@@ -25,7 +25,7 @@ This project is about writing your first JavaScript functions, using a previousl
 - Skip Jest tests with `.skip`
 - Interpret the output of Jest tests
 - Run Jest tests in watch mode
-- Distinguish between the Jest `toBe` and `toEqual` matchers
+- Distinguish between the Jest `toBe` and `toStrictEqual` matchers
 - Declare variables in JavaScript with `let` and `const`
 - Write a function with a function expression in JavaScript
 - Write an `if`/`else` statement in JavaScript
@@ -112,16 +112,16 @@ Tests: 1 failed, 4 skipped, 5 total
 Our Jest output gives us the following:
 
 ```
-expect(received).toEqual(expected) // deep equality
+expect(received).toStrictEqual(expected) // deep equality
 
 Expected: ["____#____", "____#____"]
 Received: undefined
 
   13 |
   14 | test.only("makeTreeTrunk returns the tree trunk part of the Christmas tree with given foliage height", () => {
-> 15 |   expect(makeTreeTrunk(5)).toEqual(["____#____", "____#____"]);
+> 15 |   expect(makeTreeTrunk(5)).toStrictEqual(["____#____", "____#____"]);
      |                            ^
-  16 |   expect(makeTreeTrunk(3)).toEqual(["__#__", "__#__"]);
+  16 |   expect(makeTreeTrunk(3)).toStrictEqual(["__#__", "__#__"]);
   17 | });
   18 |
 
@@ -155,7 +155,7 @@ function makeTreeTrunk(foliageHeight) {
 and run the tests again.
 
 ```
- expect(received).toEqual(expected) // deep equality
+ expect(received).toStrictEqual(expected) // deep equality
 
  - Expected  - 2
  + Received  + 1
@@ -168,9 +168,9 @@ and run the tests again.
 
    13 |
    14 | test.only("makeTreeTrunk returns the tree trunk part of the Christmas tree with given foliage height", () => {
- > 15 |   expect(makeTreeTrunk(5)).toEqual(["____#____", "____#____"]);
+ > 15 |   expect(makeTreeTrunk(5)).toStrictEqual(["____#____", "____#____"]);
       |                            ^
-   16 |   expect(makeTreeTrunk(3)).toEqual(["__#__", "__#__"]);
+   16 |   expect(makeTreeTrunk(3)).toStrictEqual(["__#__", "__#__"]);
    17 | });
    18 |
 
@@ -248,7 +248,9 @@ So, now, you can run either `yarn test` or `yarn test:watch` (with the [colon be
 
 (Alternatively, you might prefer to configure watch mode to be the default on the `"test"` script, with a `:noWatch` appended to run without watch mode.)
 
-## Exercise 4: `.toBe` vs `.toEqual`
+## Exercise 4: `.toBe` vs `.toStrictEqual`
+
+> 🎯 **Success criterion:** you can distinguish between `.toStrictEqual` and `.toBe`
 
 Now, let's change `makeTreeTrunk` to make one assertion pass:
 
@@ -263,7 +265,7 @@ Before you look at the test output, **predict what you think the test output wil
 <details>
   <summary>SPOILER: test output</summary>
   <pre>
-     expect(received).toEqual(expected) // deep equality
+     expect(received).toStrictEqual(expected) // deep equality
 
     - Expected  - 2
     + Received  + 2
@@ -276,8 +278,8 @@ Before you look at the test output, **predict what you think the test output wil
       ]
 
       14 | test.only("makeTreeTrunk returns the tree trunk part of the Christmas tree with given foliage height", () => {
-      15 |   expect(makeTreeTrunk(5)).toEqual(["____#____", "____#____"]);
-    > 16 |   expect(makeTreeTrunk(3)).toEqual(["__#__", "__#__"]);
+      15 |   expect(makeTreeTrunk(5)).toStrictEqual(["____#____", "____#____"]);
+    > 16 |   expect(makeTreeTrunk(3)).toStrictEqual(["__#__", "__#__"]);
          |                            ^
       17 | });
       18 |
@@ -289,3 +291,148 @@ Before you look at the test output, **predict what you think the test output wil
 
   <p>Our first assertion (line 15) is now passing, but the second assertion (line 16) is failing, with two missing lines and two additional (unwanted) lines.</p>
 </details>
+
+Now, head on over to `.xmas-tree.test.js`, and let's take a look at the different assertions being made.
+
+Each assertion we can see at the moment has one of the following two structures:
+
+```js
+// structure one
+expect(testedFunction(testValue)).toBe(expectedValue);
+
+// structure two
+expect(testedFunction(testValue)).toStrictEqual(expectedValue);
+```
+
+These have a similar semantic structure: our test tells us that we should compare `testedFunction(testValue)` to `expectedValue`, and expect that they are similar in some specified way. (If they are not similar in that particular way, the test will fail.)
+
+`.toBe` and `.toStrictEqual` are two different Jest _matchers_, which use different criteria to compare `testedFunction(testValue)` and `expectedValue`.
+
+To demonstrate this, let's change our first `makeTreeTrunk` assertion, to use `.toBe` instead of `.toStrictEqual`:
+
+```js
+expect(makeTreeTrunk(5)).toBe(["____#____", "____#____"]);
+```
+
+and then run the tests:
+
+```bash
+expect(received).toBe(expected) // Object.is equality
+
+If it should pass with deep equality, replace "toBe" with "toStrictEqual"
+
+Expected: ["____#____", "____#____"]
+Received: serializes to the same string
+
+  13 |
+  14 | test.only("makeTreeTrunk returns the tree trunk part of the Christmas tree with given foliage height", () => {
+> 15 |   expect(makeTreeTrunk(5)).toBe(["____#____", "____#____"]);
+     |                            ^
+  16 |   expect(makeTreeTrunk(3)).toStrictEqual(["__#__", "__#__"]);
+  17 | });
+  18 |
+
+  at Object.<anonymous> (xmas-tree.test.js:15:28)
+```
+
+Our assertion on line 15, that was passing with the `.toStrictEqual` matcher, now fails with the `.toBe` matcher.
+
+In other words, they're checking for different things:
+
+- `.toBe` checks for _referential identity_
+- `toStrictEqual` _recursively_ checks for _deep value equality_
+
+If `.toBe` passes, then `.toStrictEqual` will pass; however, it is possible for `.toBe` to fail and yet for `.toStrictEqual` to pass.
+
+As a simple shortcut for now, it's probably enough for now for you to remember that, when you are writing a test to compare data structures that group other 'simpler' values - i.e. arrays (JavaScript's equivalent of Python lists) or objects (JavaScript's equivalent of Python dictionaries) - that you probably want to use `.toStrictEqual` to do a _deep_ check; otherwise, for 'simple' values (numbers, strings, booleans) it's sufficient to use the simpler/shorter `.toBe` matcher.
+
+The full story here is one about primitive and non-primitive types.
+
+Here are some readings we recommend:
+
+- [Just JavaScript](https://github.com/HackYourFutureBelgium/just-javascript), chapters 1-6 (inclusive) - longer, but worth it
+- [Value vs Reference](https://www.educative.io/courses/step-up-your-js-a-comprehensive-guide-to-intermediate-javascript/7nAZrnYW9rG)
+- [How to Compare Objects in JavaScript](https://dmitripavlutin.com/how-to-compare-objects-in-javascript/)
+
+To check that you're able to distinguish between `.toBe` and `.toStrictEqual`, you might want to add the following temporary tests, predict which of them will pass/fail, and then check the test output:
+
+```js
+test("toBe on arrays - experiment", () => {
+  expect([1, 2, 3]).toBe([1, 2, 3]);
+  expect(["a", "b", "c"]).toBe(["a", "b", "c"]);
+});
+
+test("toStrictEqual on arrays - experiment", () => {
+  expect([1, 2, 3]).toStrictEqual([1, 2, 3]);
+  expect(["a", "b", "c"]).toStrictEqual(["a", "b", "c"]);
+});
+
+test("toBe on booleans - experiment", () => {
+  expect(true).toBe(true);
+  expect(false).toBe(false);
+});
+
+test("toStrictEqual on booleans - experiment", () => {
+  expect(true).toStrictEqual(true);
+  expect(false).toStrictEqual(false);
+});
+
+test("toBe on numbers - experiment", () => {
+  expect(1).toBe(1);
+  expect(100).toBe(100);
+});
+
+test("toStrictEqual on numbers - experiment", () => {
+  expect(1).toStrictEqual(1);
+  expect(100).toStrictEqual(100);
+});
+
+test("toBe on objects - experiment", () => {
+  expect({ firstName: "Richard", lastName: "Ng" }).toBe({
+    firstName: "Richard",
+    lastName: "Ng",
+  });
+  expect({ a: "A", b: "B", c: "C" }).toBe({ a: "A", b: "B", c: "C" });
+});
+
+test("toStrictEqual on objects - experiment", () => {
+  expect({ firstName: "Richard", lastName: "Ng" }).toStrictEqual({
+    firstName: "Richard",
+    lastName: "Ng",
+  });
+  expect({ a: "A", b: "B", c: "C" }).toStrictEqual({ a: "A", b: "B", c: "C" });
+});
+
+test("toBe on strings - experiment", () => {
+  expect("hello").toBe("hello");
+  expect("world").toBe("world");
+});
+
+test("toStrictEqual on strings - experiment", () => {
+  expect("hello").toStrictEqual("hello");
+  expect("world").toStrictEqual("world");
+});
+```
+
+Change the `.toBe` matcher back to `.toStrictEqual`, and remove the temporary tests above if you added them - we're now going to try to make the tests pass!
+
+## Exercise 5: completing the kata
+
+> 🎯 **Success criterion:** all of the initial tests are passing
+
+The tests are laid out in an order that we suggest you approach them (i.e. we suggest you tackle `findLineWidth` first, then `makeTreeTrunk`, and so on).
+
+It will probably be helpful to make use of the `.skip` functionality in Jest to ignore failing tests whilst you're not working on them.
+
+Things which you may find helpful:
+
+1. Documentation on [repeating a JavaScript string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat)
+2. [String Interpolation in JavaScript](https://dmitripavlutin.com/string-interpolation-in-javascript/)
+
+## Exercise 6: adding Jest assertions
+
+> 🎯 **Success criterion:** you have added at least one assertion to every `test`, and the tests all pass
+
+Now, see if you can add a third assertion to each `test` block (at the moment, they all have two assertions).
+
+If you've written robust solutions (and the test code you're writing is correct), the tests should all still pass! 🎉
