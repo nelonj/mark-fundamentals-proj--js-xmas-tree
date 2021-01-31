@@ -22,7 +22,7 @@ This project is about writing your first JavaScript functions, using a previousl
 
 ## Learning Outcomes
 
-- Write tests in JavaScript with Jest
+- Skip Jest tests with `.skip`
 - Distinguish between the Jest `toBe` and `toEqual` matchers
 - Declare variables in JavaScript with `let` and `const`
 - Write a function with a function expression in JavaScript
@@ -32,7 +32,7 @@ This project is about writing your first JavaScript functions, using a previousl
 
 ## Exercise 0: Running and interpreting Jest tests
 
-> 🎯 **Success criterion:** you are able to run the tests for this project locally and see the output in your terminal.
+> 🎯 **Success criterion:** you are able to run the tests for this project locally and see the output (failing tests report) in your terminal.
 
 This repository contains a JavaScript project with tests (but mostly empty main code).
 
@@ -58,4 +58,47 @@ and we can now run tests:
 yarn test
 ```
 
-You'll see most tests are failing. We'll be making them pass in this exercise!
+You'll see a lot of terminal output, including the following:
+
+```bash
+Tests: 5 failed, 5 total
+```
+
+We'll make these tests pass in this project!
+
+## Exercise 1: Skipping Jest tests
+
+> 🎯 **Success criterion:** you run the tests and see that 4 tests are skipped (with 1 running and failing).
+
+Having a lot of tests is helpful - it gives us confidence in the code that we write (or have written), and a structure to guide us in solving the problem at hand.
+
+But tests can sometimes be unhelpful, too:
+
+- Paralysis: "Oh, there's so much to do, I don't know where to start!"
+- Noise: "I want to focus on _this_ test first but I keep having to look through these other tests that I _know_ will be failing"
+
+Luckily, the Jest testing library gives us a nice way to skip tests and come back to them later.
+
+Go to the first test and add a `.skip` after the `test`, so it looks like this:
+
+```js
+test.skip("findLineWidth finds the line width from a foliage height", () => {
+  ... // <-- this is commonly used to signify "omitted detail" in code snippets
+});
+```
+
+Now, run the tests. This time, the terminal output should include:
+
+```bash
+Tests: 4 failed, 1 skipped, 5 total
+```
+
+This shows us that Jest is ignoring the 1 test that we added a `.skip` to.
+
+Go ahead and **add `.skip` to all of the tests _apart from for `makeTreeTrunk`_** (which we'll be looking at in the next exercise).
+
+Now, when you run the tests, you should see:
+
+```bash
+Tests: 1 failed, 4 skipped, 5 total
+```
