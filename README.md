@@ -23,6 +23,8 @@ This project is about writing your first JavaScript functions, using a previousl
 ## Learning Outcomes
 
 - Skip Jest tests with `.skip`
+- Interpret the output of Jest tests
+- Run Jest tests in watch mode
 - Distinguish between the Jest `toBe` and `toEqual` matchers
 - Declare variables in JavaScript with `let` and `const`
 - Write a function with a function expression in JavaScript
@@ -102,3 +104,146 @@ Now, when you run the tests, you should see:
 ```bash
 Tests: 1 failed, 4 skipped, 5 total
 ```
+
+## Exercise 2: Interpreting Jest tests
+
+> 🎯 **Success criterion:** an explanation and interpretation of the Jest test output at the end of the exercise.
+
+Our Jest output gives us the following:
+
+```
+expect(received).toEqual(expected) // deep equality
+
+Expected: ["____#____", "____#____"]
+Received: undefined
+
+  13 |
+  14 | test.only("makeTreeTrunk returns the tree trunk part of the Christmas tree with given foliage height", () => {
+> 15 |   expect(makeTreeTrunk(5)).toEqual(["____#____", "____#____"]);
+     |                            ^
+  16 |   expect(makeTreeTrunk(3)).toEqual(["__#__", "__#__"]);
+  17 | });
+  18 |
+
+  at Object.<anonymous> (xmas-tree.test.js:15:28)
+```
+
+This gives us lots of helpful information:
+
+1. Which assertion is failing: it's the one on line 15
+2. What the test was expecting to see: `["____#____", "____#____"]`
+3. What the test actually received: `undefined`
+
+Let's go to our `makeTreeTrunk` function and add in a simple (if strange) body, where we just `return true`:
+
+```js
+function makeTreeTrunk(foliageHeight) {
+  return true;
+}
+```
+
+Now, **predict what the output of Jest will be**, and then run the tests.
+
+Let's make another change:
+
+```js
+function makeTreeTrunk(foliageHeight) {
+  return [true];
+}
+```
+
+and run the tests again.
+
+```
+ expect(received).toEqual(expected) // deep equality
+
+ - Expected  - 2
+ + Received  + 1
+
+   Array [
+ -   "____#____",
+ -   "____#____",
+ +   true,
+   ]
+
+   13 |
+   14 | test.only("makeTreeTrunk returns the tree trunk part of the Christmas tree with given foliage height", () => {
+ > 15 |   expect(makeTreeTrunk(5)).toEqual(["____#____", "____#____"]);
+      |                            ^
+   16 |   expect(makeTreeTrunk(3)).toEqual(["__#__", "__#__"]);
+   17 | });
+   18 |
+
+   at Object.<anonymous> (xmas-tree.test.js:15:28)
+```
+
+This gives us some interesting and helpful output:
+
+- `- Expected - 2`: There are 2 array elements which we expected but which are missing in what we received
+- `+ Received + 1`: There is 1 array element which we received but which we did not expect (and do not want)
+
+Specifically:
+
+```
+   Array [
+ -   "____#____",
+ -   "____#____",
+ +   true,
+   ]
+```
+
+- There are two missing elements of `"____#____"`; and
+- There is one unwanted element of `true`
+
+Let's update our function once more:
+
+```js
+function makeTreeTrunk(foliageHeight) {
+  return ["hello world", "____#____"];
+}
+```
+
+Now, **predict what the Jest test output might be**, and run the tests.
+
+How does the Jest output help us identify how our test is failing?
+
+## Exercise 4: Jest in watch mode
+
+> 🎯 **Success criterion:** Jest is running in watch mode and automatically rerunning as relevant code changes.
+
+We've been doing a lot of the following cycle:
+
+1. Run tests
+2. Change code
+3. Repeat
+
+Luckily, Jest has a handy "watch" mode which means it will automatically run when relevant code gets updated.
+
+Navigate to `package.json` and update the `test` script as follows:
+
+```json
+"scripts": {
+    "test": "jest --watch"
+  },
+```
+
+Now, when you run `yarn test`, it will run Jest in watch mode.
+
+Go back and make a quick change the `makeTreeTrunk` function (e.g. delete the function body - it doesn't matter exactly how you change it).
+
+Now, when you inspect your terminal (where you ran Jest), you'll see it has automatically re-run the tests!
+
+You can quit out of watch mode with `Ctrl + C`.
+
+Let's go back to our `package.json` and update our scripts to give us a convenient way of running tests in watch mode or not:
+
+```json
+"scripts": {
+ "test": "jest",
+ "test:watch": "jest --watch"
+},
+```
+
+So, now, you can run either `yarn test` or `yarn test:watch` (with the [colon being a common convention for related `npm` or `yarn` scripts](https://stackoverflow.com/questions/47606101/what-is-colon-in-npm-script-names)).
+
+(Alternatively, you might prefer to configure watch mode to be the default on the `"test"` script, with a `:noWatch` appended to run without watch mode.)
