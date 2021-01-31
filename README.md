@@ -429,6 +429,11 @@ Things which you may find helpful:
 1. Documentation on [repeating a JavaScript string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat)
 2. [String Interpolation in JavaScript](https://dmitripavlutin.com/string-interpolation-in-javascript/)
 
+See if you can:
+
+- Firstly, get the tests passing using only traditional `function` expressions
+- Then, see if you can get the tests passing using concise one-line arrow functions where possible
+
 ## Exercise 6: adding Jest assertions
 
 > 🎯 **Success criterion:** you have added at least one assertion to every `test`, and the tests all pass
