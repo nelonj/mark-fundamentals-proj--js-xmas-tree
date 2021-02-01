@@ -324,13 +324,13 @@ If it should pass with deep equality, replace "toBe" with "toStrictEqual"
 Expected: ["____#____", "____#____"]
 Received: serializes to the same string
 
-  13 |
-  14 | test.only("makeTreeTrunk returns the tree trunk part of the Christmas tree with given foliage height", () => {
-> 15 |   expect(makeTreeTrunk(5)).toBe(["____#____", "____#____"]);
-     |                            ^
-  16 |   expect(makeTreeTrunk(3)).toStrictEqual(["__#__", "__#__"]);
-  17 | });
-  18 |
+      13 | 
+      14 | test("makeTreeTrunk returns the tree trunk part of the Christmas tree with given foliage height", () => {
+    > 15 |   expect(makeTreeTrunk(5)).toBe(["____#____", "____#____"]);
+         |                            ^
+      16 |   expect(makeTreeTrunk(3)).toStrictEqual(["__#__", "__#__"]);
+      17 | });
+      18 | 
 
   at Object.<anonymous> (xmas-tree.test.js:15:28)
 ```
@@ -416,7 +416,7 @@ test("toStrictEqual on strings - experiment", () => {
 
 Change the `.toBe` matcher back to `.toStrictEqual`, and remove the temporary tests above if you added them - we're now going to try to make the tests pass!
 
-## Exercise 5: completing the kata
+## Exercise 5: Completing the kata
 
 > 🎯 **Success criterion:** all of the initial tests are passing
 
@@ -434,7 +434,7 @@ See if you can:
 - Firstly, get the tests passing using only traditional `function` expressions
 - Then, see if you can get the tests passing using concise one-line arrow functions where possible
 
-## Exercise 6: adding Jest assertions
+## Exercise 6: Adding Jest assertions
 
 > 🎯 **Success criterion:** you have added at least one assertion to every `test`, and the tests all pass
 
