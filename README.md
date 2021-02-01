@@ -432,7 +432,7 @@ Things which you may find helpful:
 See if you can:
 
 - Firstly, get the tests passing using only traditional `function` expressions
-- Then, see if you can get the tests passing using concise one-line arrow functions where possible
+- Then, see if you can get the tests passing using concise one-line arrow functions where appropriate (remembering that readability is still very important)
 
 ## Exercise 6: Adding Jest assertions
 
