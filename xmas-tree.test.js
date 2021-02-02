@@ -1,7 +1,7 @@
 const {
   xmasTree,
   findLineWidth,
-  makeFoliageSegment,
+  makeFoliageLine,
   makeTreeFoliage,
   makeTreeTrunk,
 } = require("./xmas-tree");
@@ -16,16 +16,16 @@ test("makeTreeTrunk returns the tree trunk part of the Christmas tree with given
   expect(makeTreeTrunk(3)).toStrictEqual(["__#__", "__#__"]);
 });
 
-test("makeFoliageSegment returns the foliage segment for a given level of a tree of given foliage height", () => {
-  expect(makeFoliageSegment(3, 1)).toBe("__#__");
-  expect(makeFoliageSegment(3, 2)).toBe("_###_");
-  expect(makeFoliageSegment(3, 3)).toBe("#####");
+test("makeFoliageLine returns a single line of foliage for a tree of given height and at the specified level", () => {
+  expect(makeFoliageLine(3, 1)).toBe("__#__");
+  expect(makeFoliageLine(3, 2)).toBe("_###_");
+  expect(makeFoliageLine(3, 3)).toBe("#####");
 
-  expect(makeFoliageSegment(5, 1)).toBe("____#____");
-  expect(makeFoliageSegment(5, 2)).toBe("___###___");
-  expect(makeFoliageSegment(5, 3)).toBe("__#####__");
-  expect(makeFoliageSegment(5, 4)).toBe("_#######_");
-  expect(makeFoliageSegment(5, 4)).toBe("#########");
+  expect(makeFoliageLine(5, 1)).toBe("____#____");
+  expect(makeFoliageLine(5, 2)).toBe("___###___");
+  expect(makeFoliageLine(5, 3)).toBe("__#####__");
+  expect(makeFoliageLine(5, 4)).toBe("_#######_");
+  expect(makeFoliageLine(5, 4)).toBe("#########");
 });
 
 test("makeTreeFoliage returns the foliage for a tree of given foliage height", () => {

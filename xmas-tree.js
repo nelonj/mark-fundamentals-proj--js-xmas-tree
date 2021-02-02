@@ -17,7 +17,7 @@ function findLineWidth(foliageHeight) {
   // your code here
 }
 
-function makeFoliageSegment(foliageHeight, segmentLevel) {
+function makeFoliageLine(foliageHeight, lineLevel) {
   // your code here
 }
 
@@ -33,7 +33,7 @@ function makeTreeTrunk(foliageHeight) {
 module.exports = {
   xmasTree,
   findLineWidth,
-  makeFoliageSegment,
+  makeFoliageLine,
   makeTreeFoliage,
   makeTreeTrunk,
 };
