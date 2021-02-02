@@ -117,20 +117,20 @@ expect(received).toStrictEqual(expected) // deep equality
 Expected: ["____#____", "____#____"]
 Received: undefined
 
-  13 |
-  14 | test.only("makeTreeTrunk returns the tree trunk part of the Christmas tree with given foliage height", () => {
-> 15 |   expect(makeTreeTrunk(5)).toStrictEqual(["____#____", "____#____"]);
-     |                            ^
-  16 |   expect(makeTreeTrunk(3)).toStrictEqual(["__#__", "__#__"]);
-  17 | });
-  18 |
+      13 | 
+      14 | test("makeTreeTrunk returns the tree trunk part of the Christmas tree with given foliage height", () => {
+    > 15 |   expect(makeTreeTrunk(5)).toStrictEqual(["____#____", "____#____"]);
+         |                            ^
+      16 |   expect(makeTreeTrunk(3)).toStrictEqual(["__#__", "__#__"]);
+      17 | });
+      18 | 
 
   at Object.<anonymous> (xmas-tree.test.js:15:28)
 ```
 
 This gives us lots of helpful information:
 
-1. Which assertion is failing: it's the one on line 15
+1. Which assertion is failing: it's the one on line 14
 2. What the test was expecting to see: `["____#____", "____#____"]`
 3. What the test actually received: `undefined`
 
@@ -166,13 +166,13 @@ and run the tests again.
  +   true,
    ]
 
-   13 |
-   14 | test.only("makeTreeTrunk returns the tree trunk part of the Christmas tree with given foliage height", () => {
- > 15 |   expect(makeTreeTrunk(5)).toStrictEqual(["____#____", "____#____"]);
-      |                            ^
-   16 |   expect(makeTreeTrunk(3)).toStrictEqual(["__#__", "__#__"]);
-   17 | });
-   18 |
+      13 | 
+      14 | test("makeTreeTrunk returns the tree trunk part of the Christmas tree with given foliage height", () => {
+    > 15 |   expect(makeTreeTrunk(5)).toStrictEqual(["____#____", "____#____"]);
+         |                            ^
+      16 |   expect(makeTreeTrunk(3)).toStrictEqual(["__#__", "__#__"]);
+      17 | });
+      18 | 
 
    at Object.<anonymous> (xmas-tree.test.js:15:28)
 ```
@@ -277,19 +277,19 @@ Before you look at the test output, **predict what you think the test output wil
     +   "____#____",
       ]
 
-      14 | test.only("makeTreeTrunk returns the tree trunk part of the Christmas tree with given foliage height", () => {
+      14 | test("makeTreeTrunk returns the tree trunk part of the Christmas tree with given foliage height", () => {
       15 |   expect(makeTreeTrunk(5)).toStrictEqual(["____#____", "____#____"]);
     > 16 |   expect(makeTreeTrunk(3)).toStrictEqual(["__#__", "__#__"]);
          |                            ^
       17 | });
-      18 |
-      19 | test("makeFoliageSegment returns the foliage segment for a given level of a tree of given foliage height", () => {
+      18 | 
+      19 | test.skip("makeFoliageSegment returns the foliage segment for a given level of a tree of given foliage height", () => {
 
       at Object.<anonymous> (xmas-tree.test.js:16:28)
 
   </pre>
 
-  <p>Our first assertion (line 15) is now passing, but the second assertion (line 16) is failing, with two missing lines and two additional (unwanted) lines.</p>
+  <p>Our first assertion (line 15) is now passing, but the second assertion (line 16) is failing (shown by the arrow), with two missing lines and two additional (unwanted) lines.</p>
 </details>
 
 Now, head on over to `.xmas-tree.test.js`, and let's take a look at the different assertions being made.
@@ -324,13 +324,13 @@ If it should pass with deep equality, replace "toBe" with "toStrictEqual"
 Expected: ["____#____", "____#____"]
 Received: serializes to the same string
 
-  13 |
-  14 | test.only("makeTreeTrunk returns the tree trunk part of the Christmas tree with given foliage height", () => {
-> 15 |   expect(makeTreeTrunk(5)).toBe(["____#____", "____#____"]);
-     |                            ^
-  16 |   expect(makeTreeTrunk(3)).toStrictEqual(["__#__", "__#__"]);
-  17 | });
-  18 |
+      13 | 
+      14 | test("makeTreeTrunk returns the tree trunk part of the Christmas tree with given foliage height", () => {
+    > 15 |   expect(makeTreeTrunk(5)).toBe(["____#____", "____#____"]);
+         |                            ^
+      16 |   expect(makeTreeTrunk(3)).toStrictEqual(["__#__", "__#__"]);
+      17 | });
+      18 | 
 
   at Object.<anonymous> (xmas-tree.test.js:15:28)
 ```
@@ -416,7 +416,7 @@ test("toStrictEqual on strings - experiment", () => {
 
 Change the `.toBe` matcher back to `.toStrictEqual`, and remove the temporary tests above if you added them - we're now going to try to make the tests pass!
 
-## Exercise 5: completing the kata
+## Exercise 5: Completing the kata
 
 > 🎯 **Success criterion:** all of the initial tests are passing
 
@@ -432,9 +432,9 @@ Things which you may find helpful:
 See if you can:
 
 - Firstly, get the tests passing using only traditional `function` expressions
-- Then, see if you can get the tests passing using concise one-line arrow functions where possible
+- Then, see if you can get the tests passing using concise one-line arrow functions where appropriate (remembering that readability is still very important)
 
-## Exercise 6: adding Jest assertions
+## Exercise 6: Adding Jest assertions
 
 > 🎯 **Success criterion:** you have added at least one assertion to every `test`, and the tests all pass
 
