@@ -1,3 +1,5 @@
+'use strict'
+
 function xmasTree(foliageHeight) {
   /**
    * We've broken down this function into three sub-problems.
@@ -14,19 +16,31 @@ function xmasTree(foliageHeight) {
 }
 
 function findLineWidth(foliageHeight) {
-  // your code here
+  return (foliageHeight * 2 - 1);
 }
 
 function makeFoliageLine(foliageHeight, lineLevel) {
-  // your code here
+  const underscores = foliageHeight - lineLevel
+  const hash = lineLevel * 2 - 1
+  return ('_'.repeat(underscores) + '#'.repeat(hash)  + '_'.repeat(underscores))
 }
 
 function makeTreeFoliage(foliageHeight) {
-  // your code here
+  let foliageArray = []
+  for (let line = 1; line <= foliageHeight; line++) {
+    const underscores = foliageHeight - line
+    const hash = line * 2 -1
+    foliageArray.push('_'.repeat(underscores) + '#'.repeat(hash)  + '_'.repeat(underscores))
+  }
+  return foliageArray
 }
 
 function makeTreeTrunk(foliageHeight) {
-  // your code here
+  const underscores = foliageHeight - 1
+  const hash = 1
+  const trunkLine = ('_'.repeat(underscores) + '#'.repeat(hash)  + '_'.repeat(underscores))
+  const trunkArray = [trunkLine, trunkLine]
+  return trunkArray
 }
 
 // exports the functions so that ./xmas-tree.test.js can import them
@@ -37,3 +51,5 @@ module.exports = {
   makeTreeFoliage,
   makeTreeTrunk,
 };
+
+

@@ -25,7 +25,7 @@ test("makeFoliageLine returns a single line of foliage for a tree of given heigh
   expect(makeFoliageLine(5, 2)).toBe("___###___");
   expect(makeFoliageLine(5, 3)).toBe("__#####__");
   expect(makeFoliageLine(5, 4)).toBe("_#######_");
-  expect(makeFoliageLine(5, 4)).toBe("#########");
+  expect(makeFoliageLine(5, 5)).toBe("#########");
 });
 
 test("makeTreeFoliage returns the foliage for a tree of given foliage height", () => {
